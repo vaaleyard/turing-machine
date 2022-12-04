@@ -10,7 +10,7 @@ pub enum Move {
 #[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Transition {
-    pub simbolo: String,
+    pub le_simbolo: String,
     pub escreve: String,
     pub direcao: Move,
     pub estado_origem: String,

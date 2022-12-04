@@ -47,7 +47,7 @@ impl Machine {
         self.transicoes
             .iter()
             .filter(|transicao| {
-                transicao.estado_origem == actual_state && transicao.simbolo == symbol
+                transicao.estado_origem == actual_state && transicao.le_simbolo == symbol
             })
             .collect::<_>()
     }
