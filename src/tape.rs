@@ -1,3 +1,5 @@
+use crate::model::{Transition, Move};
+
 const TAPE_SIZE: usize = 20;
 
 #[derive(Default, Debug)]
@@ -22,5 +24,16 @@ impl Tape {
             }];
             self.tape.append(&mut cell);
         }
+    }
+
+    pub fn move_index(&mut self, transition: &Transition) {
+        match transition.direcao {
+            Move::LEFT  => self.index -= 1,
+            Move::RIGHT => self.index += 1,
+        }
+    }
+
+    pub fn print_tape(&mut self) {
+        println!("{:?}" , self.tape.iter().map(|cell| cell.data.clone()).collect::<Vec<_>>().join(""));
     }
 }
