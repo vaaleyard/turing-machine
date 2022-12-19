@@ -10,6 +10,7 @@ type Machine struct {
 	Transicoes     []Transition `json:"transicoes"`
 	MarcadorInicio string       `json:"marcadorInicio"`
 	SimboloBranco  string       `json:"simboloBranco"`
-	EstadoInicial  *string       `json:"estadoInicial"`
+	EstadoInicial  *string      `json:"estadoInicial"`
+	EstadosFinais  []string     `json:"estadoFinais"`
 	Estados        []string     `json:"estados"`
 }
