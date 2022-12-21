@@ -1,14 +1,11 @@
 package ui
 
 import (
-	"fmt"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	m "github.com/vaaleyard/turing-machine/machine"
 	t "github.com/vaaleyard/turing-machine/tape"
-	"log"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -21,13 +18,12 @@ var (
 
 type App struct {
 	actualState *string
-	wg          *sync.WaitGroup
-	finished    chan bool
 }
 
 func updateTape(machineApp *App) bool {
 	var done bool = false
-	tviewApp.QueueUpdate(func() {
+	time.Sleep(500 * time.Millisecond)
+	tviewApp.QueueUpdateDraw(func() {
 		var isMachineDone bool = machine.IsDone(tape, machineApp.actualState)
 		if !isMachineDone {
 
@@ -46,11 +42,11 @@ func updateTape(machineApp *App) bool {
 					SetSelectable(true).
 					SetAlign(tview.AlignCenter),
 			)
-			log.Println(*machineApp.actualState + " ")
 			isMachineDone = machine.IsDone(tape, machineApp.actualState)
 			done = isMachineDone
 		}
 	})
+	//tviewApp.Draw()
 	return done
 }
 
@@ -75,25 +71,20 @@ func Ui() {
 			drawInputtedTape(table, alphabet)
 		}).
 		AddButton("Process Machine", func() {
-			var done bool = false
 			go func() {
+				var done bool = false
 				for !done {
 					done = updateTape(machineApp)
-					tviewApp.Draw()
 				}
+
+				if machine.ValidateChain(*machineApp.actualState) {
+					alert(pages, "alert-dialog", "Cadeia Aceita")
+				} else {
+					alert(pages, "alert-dialog", "Cadeia Rejeitada")
+				}
+				tviewApp.Draw()
 			}()
-			// TODO: preservar o valor do estado atual
-			time.Sleep(3 * time.Second)
-			// validations
-			if machine.ValidateChain(*machineApp.actualState) {
-				fmt.Println("atual:" + *machineApp.actualState)
-				alert(pages, "alert-dialog", "Cadeia Aceita")
-			} else {
-				fmt.Println("atual: " + *machineApp.actualState)
-				alert(pages, "alert-dialog", "Cadeia Rejeitada")
-			}
 		}).
-		SetButtonsAlign(tview.AlignCenter).
 		SetButtonsAlign(tview.AlignCenter).
 		SetButtonBackgroundColor(tcell.ColorBlack).
 		SetButtonTextColor(tcell.ColorYellow.TrueColor())
@@ -168,10 +159,12 @@ func alert(pages *tview.Pages, id string, message string) *tview.Pages {
 		id,
 		tview.NewModal().
 			SetText(message).
-			AddButtons([]string{"确定"}).
+			AddButtons([]string{"Ok"}).SetBackgroundColor(tcell.ColorBlack).
 			SetDoneFunc(func(buttonIndex int, buttonLabel string) {
 				pages.HidePage(id).RemovePage(id)
-			}),
+			}).
+			SetButtonBackgroundColor(tcell.ColorBlack).
+			SetButtonTextColor(tcell.ColorYellow.TrueColor()),
 		false,
 		true,
 	)

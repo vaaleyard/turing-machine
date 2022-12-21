@@ -11,6 +11,6 @@ type Machine struct {
 	MarcadorInicio string       `json:"marcadorInicio"`
 	SimboloBranco  string       `json:"simboloBranco"`
 	EstadoInicial  *string      `json:"estadoInicial"`
-	EstadosFinais  []string     `json:"estadoFinais"`
+	EstadosFinais  []string     `json:"estadosFinais"`
 	Estados        []string     `json:"estados"`
 }
