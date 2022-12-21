@@ -11,7 +11,7 @@ import (
 	. "github.com/vaaleyard/turing-machine/transition"
 )
 
-const BLANK_CELL_QUANTITY = 50
+const BLANK_CELL_QUANTITY = 60
 
 func NewMachineFromFile(path string) Machine {
 	jsonFile, err := os.Open(path)

@@ -61,7 +61,7 @@ func Ui() {
 	var inputAlphabet string
 	var machineApp *App
 	form := tview.NewForm()
-	form.AddInputField("Entre com a cadeia: ", "", 40, nil, nil).
+	form.AddInputField("Input: ", "", 55, nil, nil).
 		SetFieldTextColor(tcell.ColorBlack.TrueColor()).
 		AddButton("Load Tape", func() {
 			inputAlphabet = form.GetFormItem(0).(*tview.InputField).GetText()
@@ -78,9 +78,9 @@ func Ui() {
 				}
 
 				if machine.ValidateChain(*machineApp.actualState) {
-					alert(pages, "alert-dialog", "Cadeia Aceita")
+					alert(pages, "alert-dialog", "Word accepted")
 				} else {
-					alert(pages, "alert-dialog", "Cadeia Rejeitada")
+					alert(pages, "alert-dialog", "Word rejected")
 				}
 				tviewApp.Draw()
 			}()
@@ -128,7 +128,7 @@ func drawEmptyTape(table *tview.Table) {
 	for row := 0; row < rows; row++ {
 		for column := 0; column < columns; column++ {
 			table.SetCell(row, column,
-				tview.NewTableCell("B").
+				tview.NewTableCell(machine.SimboloBranco).
 					SetTextColor(tcell.ColorWhite).
 					SetAlign(tview.AlignCenter))
 			symbol = symbol + 1
